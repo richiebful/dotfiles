@@ -1,0 +1,22 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Richard Fulop
+	email = richie@freemarkethealth.com
+
+[alias]
+	a = add
+	aa = add -A
+	c = commit
+	cnv = commit --no-verify
+	co = checkout
+	cob = checkout -b
+	b = branch
+	bd = branch -D
+	p = push
+	puo = push -u origin
+	pl = pull
+	rb = rebase
+	s = status
+
+[pull]
+	rebase = true
