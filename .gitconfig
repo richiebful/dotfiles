@@ -7,6 +7,9 @@
 	a = add
 	aa = add -A
 	c = commit
+	cl = clean
+	clf = clean -f
+	cldf = clean -df
 	cnv = commit --no-verify
 	co = checkout
 	cob = checkout -b

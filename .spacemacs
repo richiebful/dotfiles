@@ -573,7 +573,7 @@ before packages are loaded."
 
   (defun org-rclone-copy-files (local-path rclone-remote-path)
     (set 'command-text (format "rclone copy %s %s" local-path rclone-remote-path))
-    (shell-command-to-string command-text)
+    (async-shell-command command-text)
     )
   (setq org-rclone-remote-path "richardbfulop-dropbox:org")
   (setq org-rclone-local-path "~/Documents/org/")
