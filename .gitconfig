@@ -6,6 +6,8 @@
 [alias]
 	a = add
 	aa = add -A
+	b = branch
+	bd = branch -D
 	c = commit
 	cl = clean
 	clf = clean -f
@@ -13,8 +15,8 @@
 	cnv = commit --no-verify
 	co = checkout
 	cob = checkout -b
-	b = branch
-	bd = branch -D
+	d = diff
+	ds = diff --summary
 	p = push
 	puo = push -u origin
 	pl = pull
