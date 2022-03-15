@@ -587,10 +587,11 @@ before packages are loaded."
     (org-rclone-copy-files org-rclone-remote-path org-rclone-local-path)
     )
 
-  (require 'dbt)
-  (add-hook 'sql-mode 'dbt-mode)
-  )
-
+  (defun format-dbt-file ()
+    (interactive)
+    (set 'command-text (format "autoload dbt-format; dbt-format --replace -f %s" (buffer-file-name (window-buffer (minibuffer-selected-window)))))
+    (message "Running shell command \"%s\"" command-text)
+    (message "Command returned with: %s" (shell-command-to-string command-text))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
