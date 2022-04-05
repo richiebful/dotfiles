@@ -592,7 +592,8 @@ before packages are loaded."
     (interactive)
     (set 'command-text (format "autoload dbt-format; dbt-format --replace -f %s" (buffer-file-name (window-buffer (minibuffer-selected-window)))))
     (message "Running shell command \"%s\"" command-text)
-    (message "Command returned with: %s" (shell-command-to-string command-text))))
+    (message "Command returned with: %s" (shell-command-to-string command-text))
+    (save-buffer)))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
