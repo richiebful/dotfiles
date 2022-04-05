@@ -18,7 +18,7 @@
 	d = diff
 	ds = diff --summary
 	p = push
-	puo = push -u origin
+	puo = push -u origin $(git rev-parse --abbrev-ref HEAD)
 	pl = pull
 	rb = rebase
 	s = status
