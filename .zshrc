@@ -15,8 +15,15 @@ git-delete-branch(){
     git push origin --delete $1
 }
 
+dbt-ci(){
+    dbt snapshot
+    dbt run --fail-fast
+    dbt test --fail-fast
+    dbt docs generate
+}
+
 alias weather="curl wttr.in"
-alias l='ls -l'
+alias l='ls -lh'
 
 export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
 export PATH="/Users/richardfulop/Library/Python/3.8/bin:$PATH"
@@ -30,6 +37,7 @@ export CGO_CFLAGS="-I/opt/homebrew/Cellar/unixodbc/2.3.9_1/include/"
 export CGO_LDFLAGS="-L/opt/homebrew/Cellar/unixodbc/2.3.9_1/lib/"
 export DBT_ADLS_NAME=npeaadlsg2
 export DBT_ENV_NAME=dev
+export DBT_OUTPUT_PREFIX=dev_richie
 export DBT_TEST_SEVERITY=warn
 export ENV=dev
 
