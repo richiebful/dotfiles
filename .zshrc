@@ -1,9 +1,12 @@
 # User configuration
 
 venv-use-existing(){
-    GIT_ROOT=$(git rev-parse --show-toplevel)
-    . $GIT_ROOT/.venv/bin/activate
-    pip install -r $GIT_ROOT/requirements.txt
+    GIT_ROOT=$(git rev-parse --show-toplevel);
+    if [$GIT_ROOT = ""]; then
+        GIT_ROOT=".";
+    fi;
+    . $GIT_ROOT/.venv/bin/activate;
+    pip install -r $GIT_ROOT/requirements.txt;
 }
 
 venv-initialize(){

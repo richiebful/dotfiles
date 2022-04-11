@@ -590,6 +590,7 @@ before packages are loaded."
 
   (defun format-dbt-file ()
     (interactive)
+    (save-buffer)
     (set 'command-text (format "autoload dbt-format; dbt-format --replace -f %s" (buffer-file-name (window-buffer (minibuffer-selected-window)))))
     (message "Running shell command \"%s\"" command-text)
     (message "Command returned with: %s" (shell-command-to-string command-text))

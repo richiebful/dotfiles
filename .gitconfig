@@ -6,7 +6,7 @@
 [alias]
 	a = add
 	aa = add -A
-	b = branch
+	b = !git --no-pager branch
 	bd = branch -D
 	c = commit
 	cl = clean
@@ -15,10 +15,11 @@
 	cnv = commit --no-verify
 	co = checkout
 	cob = checkout -b
-	d = diff
-	ds = diff --summary
+	d = !git --no-pager diff
+	ds = !git --no-pager diff --summary
+	l = !git --no-pager log | head
 	p = push
-	puo = push -u origin $(git rev-parse --abbrev-ref HEAD)
+	puo = push -u origin
 	pl = pull
 	rb = rebase
 	s = status
