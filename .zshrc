@@ -2,7 +2,9 @@
 
 venv-use-existing(){
     GIT_ROOT=$(git rev-parse --show-toplevel);
-    if [$GIT_ROOT = ""]; then
+    echo "Running from a git repository"
+    echo $GIT_ROOT
+    if [ "$GIT_ROOT" = "" ]; then
         GIT_ROOT=".";
     fi;
     . $GIT_ROOT/.venv/bin/activate;
