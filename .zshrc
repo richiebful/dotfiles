@@ -30,6 +30,8 @@ dbt-ci(){
 alias weather="curl wttr.in"
 alias l='ls -lh'
 
+export LDFLAGS="-L/opt/homebrew/Cellar/unixodbc/2.3.9_1/lib"
+export CPPFLAGS="-I/opt/homebrew/Cellar/unixodbc/2.3.9_1/include"
 export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
 export PATH="/Users/richardfulop/Library/Python/3.8/bin:$PATH"
 export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.0.0/bin:$PATH"
@@ -37,6 +39,9 @@ export PATH="$HOME/.gem/ruby/3.0.3/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@16/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="/opt/homebrew/opt/python@3.10/bin:$PATH"
+export PATH="$HOME/.flutter/bin:$PATH"
+export PATH="$HOME/.sqlite/:$PATH"
+export PATH="$HOME/.pub-cache/bin:$PATH"
 export FPATH="$HOME/.zshfunctions:$HOME/.oh-my-zsh/lib"
 export CGO_CFLAGS="-I/opt/homebrew/Cellar/unixodbc/2.3.9_1/include/"
 export CGO_LDFLAGS="-L/opt/homebrew/Cellar/unixodbc/2.3.9_1/lib/"
