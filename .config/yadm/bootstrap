@@ -13,3 +13,5 @@ if [ "$system_type" = "Darwin" ]; then
         brew bundle --global
     fi
 fi
+
+git config core.excludesfile ~/.gitignore
