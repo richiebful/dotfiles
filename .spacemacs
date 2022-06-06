@@ -61,7 +61,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(visual-regexp-steroids)
+   dotspacemacs-additional-packages '(elfeed (dbt-mode :location "~/workspace/dbt-mode/"))
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -524,7 +524,6 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  (add-to-list 'load-path "~/workspace/dbt-mode/")
 )
 
 
@@ -554,42 +553,39 @@ before packages are loaded."
   (setq interprogram-cut-function 'paste-to-osx)
   (setq interprogram-paste-function 'copy-from-osx)
 
-  (require 'visual-regexp-steroids)
-  (define-key global-map (kbd "C-c r") 'vr/replace)
-  (define-key global-map (kbd "C-c q") 'vr/query-replace)
-
-  (setq org-todo-keywords
-        '((sequence "TODO" "DONE")))
-
-  (defun org-rclone-copy-files (local-path rclone-remote-path)
-    (set 'command-text (format "rclone copy %s %s" local-path rclone-remote-path))
+  (defun org-rclone-copy-files (source-path destination-path)
+    "Copy from source to destination using rclone"
+    (set 'command-text (format "rclone copy %s %s" source-path to destination-path))
     (async-shell-command command-text)
     )
   (setq org-rclone-remote-path "richardbfulop-dropbox:org")
   (setq org-rclone-local-path "~/Documents/org/")
   (defun org-sync-to-remote ()
     (interactive)
-    (org-rclone-copy-files org-rclone-local-path org-rclone-remote-path)
-    )
+    (org-rclone-copy-files org-rclone-local-path org-rclone-remote-path))
   (defun org-sync-from-remote ()
     (interactive)
-    (org-rclone-copy-files org-rclone-remote-path org-rclone-local-path)
-    )
-
-  (defun format-dbt-file ()
-    (interactive)
-    (save-buffer)
-    (set 'command-text (format "autoload dbt-format; dbt-format --replace -f \"%s\"" (buffer-file-name (window-buffer (minibuffer-selected-window)))))
-    (message "Running shell command \"%s\"" command-text)
-    (message "Command returned with: %s" (shell-command-to-string command-text))
-    (save-buffer))
+    (org-rclone-copy-files org-rclone-remote-path org-rclone-local-path))
 
   (add-hook 'dart-mode-hook 'lsp)
 
   (setq gc-cons-threshold (* 100 1024 1024)
         read-process-output-max (* 1024 1024))
 
-  (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
+  (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)
+
+  ;; data is stored in ~/.elfeed
+  (setq elfeed-feeds
+        '(("https://news.ycombinator.com/rss" hacker)
+          ("https://understandingwar.org/feeds.xml" ukr)
+          ("https://fivethirtyeight.com/politics/feed/" five38)))
+
+  (setq-default elfeed-search-filter "@2-days-ago +unread")
+  (setq-default elfeed-search-title-max-width 100)
+  (setq-default elfeed-search-title-min-width 100)
+
+  (when (string= system-type "darwin")
+    (setq dired-use-ls-dired nil)))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -606,7 +602,7 @@ This function is called at the very end of Spacemacs initialization."
  '(evil-want-Y-yank-to-eol nil)
  '(org-agenda-files '("~/Documents/org/notes.org"))
  '(package-selected-packages
-   '(terraform-mode lsp-dart flutter dart-server dart-mode toml-mode ron-mode racer rust-mode flycheck-rust cargo csv-mode w3m godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode visual-regexp-steroids sqlup-mode sql-indent yaml-mode ob-elixir flycheck-credo alchemist elixir-mode xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd add-node-modules-path company-quickhelp yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode pydoc py-isort poetry transient pippel pipenv pyvenv pip-requirements nose lsp-python-ms lsp-pyright live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode cython-mode counsel-gtags counsel swiper ivy company-anaconda company blacken anaconda-mode pythonic ws-butler writeroom-mode visual-fill-column winum volatile-highlights vi-tilde-fringe uuidgen undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs cfrs pfuture posframe toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons memoize all-the-icons spaceline powerline restart-emacs request rainbow-delimiters quickrun popwin persp-mode password-generator paradox spinner overseer org-superstar open-junk-file nameless multi-line shut-up macrostep lorem-ipsum link-hint inspector info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-xref helm-themes helm-swoop helm-purpose window-purpose imenu-list helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio flycheck-package package-lint flycheck pkg-info epl flycheck-elsa flx-ido flx fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired f evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-collection annalist evil-cleverparens smartparens evil-args evil-anzu anzu eval-sexp-fu emr iedit clang-format projectile paredit list-utils elisp-slime-nav editorconfig dumb-jump s drag-stuff dired-quick-sort define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol ht dash auto-compile packed aggressive-indent ace-window ace-link ace-jump-helm-line helm avy helm-core popup which-key use-package pcre2el hydra lv hybrid-mode font-lock+ evil goto-chg dotenv-mode diminish bind-map bind-key async))
+   '(elfeed nil terraform-mode lsp-dart flutter dart-server dart-mode toml-mode ron-mode racer rust-mode flycheck-rust cargo csv-mode w3m godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode visual-regexp-steroids sqlup-mode sql-indent yaml-mode ob-elixir flycheck-credo alchemist elixir-mode xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd add-node-modules-path company-quickhelp yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode pydoc py-isort poetry transient pippel pipenv pyvenv pip-requirements nose lsp-python-ms lsp-pyright live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode cython-mode counsel-gtags counsel swiper ivy company-anaconda company blacken anaconda-mode pythonic ws-butler writeroom-mode visual-fill-column winum volatile-highlights vi-tilde-fringe uuidgen undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs cfrs pfuture posframe toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons memoize all-the-icons spaceline powerline restart-emacs request rainbow-delimiters quickrun popwin persp-mode password-generator paradox spinner overseer org-superstar open-junk-file nameless multi-line shut-up macrostep lorem-ipsum link-hint inspector info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-xref helm-themes helm-swoop helm-purpose window-purpose imenu-list helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio flycheck-package package-lint flycheck pkg-info epl flycheck-elsa flx-ido flx fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired f evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-collection annalist evil-cleverparens smartparens evil-args evil-anzu anzu eval-sexp-fu emr iedit clang-format projectile paredit list-utils elisp-slime-nav editorconfig dumb-jump s drag-stuff dired-quick-sort define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol ht dash auto-compile packed aggressive-indent ace-window ace-link ace-jump-helm-line helm avy helm-core popup which-key use-package pcre2el hydra lv hybrid-mode font-lock+ evil goto-chg dotenv-mode diminish bind-map bind-key async))
  '(save-interprogram-paste-before-kill t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

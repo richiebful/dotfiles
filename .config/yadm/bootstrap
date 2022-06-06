@@ -12,6 +12,6 @@ if [ "$system_type" = "Darwin" ]; then
         echo "Updating homebrew bundle"
         brew bundle --global
     fi
-fi
 
-git config core.excludesfile ~/.gitignore
+    git config core.excludesfile ~/.gitignore
+fi

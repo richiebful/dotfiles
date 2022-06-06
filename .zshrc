@@ -29,6 +29,7 @@ dbt-ci(){
 
 alias weather="curl wttr.in"
 alias l='ls -lh'
+alias psql=/opt/homebrew/Cellar/postgresql/14.3/bin/psql
 
 export LDFLAGS="-L/opt/homebrew/Cellar/unixodbc/2.3.9_1/lib"
 export CPPFLAGS="-I/opt/homebrew/Cellar/unixodbc/2.3.9_1/include"
@@ -42,6 +43,7 @@ export PATH="/opt/homebrew/opt/python@3.10/bin:$PATH"
 export PATH="$HOME/.flutter/bin:$PATH"
 export PATH="$HOME/.sqlite/:$PATH"
 export PATH="$HOME/.pub-cache/bin:$PATH"
+export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin/:$PATH"
 export FPATH="$HOME/.zshfunctions:$HOME/.oh-my-zsh/lib"
 export CGO_CFLAGS="-I/opt/homebrew/Cellar/unixodbc/2.3.9_1/include/"
 export CGO_LDFLAGS="-L/opt/homebrew/Cellar/unixodbc/2.3.9_1/lib/"
